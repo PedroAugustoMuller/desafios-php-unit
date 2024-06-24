@@ -28,6 +28,7 @@ class CalculadoraFinanceira
                 $capital -= $valorAmortizacao;
             }
             $amortizacao = ['valor_amortizacao'=>$valorAmortizacao,'totalJuros'=>$totalJuros];
+            var_dump($amortizacao);
             return $amortizacao;
         }else if ($tipo == 'PRICE')
         {

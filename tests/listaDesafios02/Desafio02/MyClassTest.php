@@ -8,5 +8,5 @@ use Root\Www\ListaDesafios02\Desafio02\MyClass;
 
 class MyClassTest extends TestCase
 {
-    
+
 }
