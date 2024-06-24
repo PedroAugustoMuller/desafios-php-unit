@@ -30,6 +30,11 @@ class CepApiTest extends TestCase
         $retorno = $this->cepApi->getAddressByCep('96815710');
         $this->assertEquals($dadosUniversitario, $retorno);
     }
+    public function testCepFormatoInvalido()
+    {
+        $retorno = $this->cepApi->getAddressByCep('95010A10');
+        $this->assertNull($retorno);
+    }
     public function testCepInvalido()
     {
         $retorno = $this->cepApi->getAddressByCep('00000000');
