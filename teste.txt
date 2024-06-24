@@ -1,0 +1,11 @@
+services:
+  php:
+    image: php:8.2-apache
+    container_name: my-php-unit
+    ports:
+      - "8080:80"
+      - "443:443"
+    volumes:
+      - .:/var/www/html
+    command: bash -c "docker-php-ext-install pdo pdo_mysql mysqli && a2enmod rewrite && apache2-foreground"
+
