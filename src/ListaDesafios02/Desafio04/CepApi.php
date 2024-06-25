@@ -10,7 +10,7 @@ class CepApi
         $curl = curl_init($this->url . $cep . $this->formato);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $json = curl_exec($curl);
-        curl_close($curl);
+        unset($curl);
         return json_decode($json, true);
     }
 }
