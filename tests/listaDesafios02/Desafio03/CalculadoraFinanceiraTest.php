@@ -44,7 +44,6 @@ class CalculadoraFinanceiraTest extends TestCase
         $retorno = $this->calculadoraFinanceira->jurosCompostos('teste', 1, 10);
         $this->assertIsString($retorno);
     }
-
     public function testAmortizacaoSACValido()
     {
         $retorno = $this->calculadoraFinanceira->calcularAmortizacao(60000, 5.8, 6, 'SAC');
