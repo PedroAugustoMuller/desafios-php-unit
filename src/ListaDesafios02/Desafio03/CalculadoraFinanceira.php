@@ -6,17 +6,17 @@ class CalculadoraFinanceira
 {
     public function jurosSimples($capital,$taxa,$parcelas)
     {
-        return $this->validarDados([$capital,$taxa,$parcelas]) ? $capital*($taxa/100)*$parcelas : 'Valores informados não são numéricos';
+        return $this->validarDados([$capital,$taxa,$parcelas]) ? $capital*($taxa/100)*$parcelas : 'Valores informados não são numéricos e maiores que zero';
     }
     public function jurosCompostos($capital,$taxa,$parcelas)
     {
-        return $this->validarDados([$capital,$taxa,$parcelas]) ? round($capital*(1+($taxa/100))**$parcelas-$capital,2) : 'Valores informados não são numéricos';
+        return $this->validarDados([$capital,$taxa,$parcelas]) ? round($capital*(1+($taxa/100))**$parcelas-$capital,2) : 'Valores informados não são numéricos e maiores que zero';
     }
     public function calcularAmortizacao($capital,$taxa,$parcelas,$tipo)
     {
         if(!$this->validarDados([$capital,$taxa,$parcelas]))
         {
-            return 'Valores informados não são numéricos';
+            return 'Valores informados não são numéricos e maiores que zero';
         }
         if($tipo == 'SAC')//SAC
         {
@@ -53,7 +53,7 @@ class CalculadoraFinanceira
     {
         foreach($dados as $dado)
         {
-            if (!is_numeric($dado))
+            if (!is_numeric($dado) || $dado < 0)
             {
                 return false;
             }
