@@ -15,6 +15,7 @@
         "phpunit/phpunit": "^11.2"
     },
   "require": {
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ext-json": "*"
   }
 }
