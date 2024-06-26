@@ -31,8 +31,12 @@ class OrderManager
         if (!$this->validateOrderExists($orderId)) {
             return false;
         }
-        $this->orders[$orderId]->addProduct($product);
-        return $this->orders[$orderId];
+        foreach ($this->orders as $order){
+            if ($order->getId() == $orderId){
+                $order->addProduct($product);
+            }
+        }
+        return $this->orders;
     }
 
     public function removeProductFromOrder(int $orderId, int $productId)
@@ -43,8 +47,12 @@ class OrderManager
         if (!$this->validateOrderExists($orderId)) {
             return false;
         }
-        $this->orders[$orderId]->removeProduct($productId);
-        return $this->orders[$orderId];
+        foreach ($this->orders as $order){
+            if ($order->getId() == $orderId){
+                $order->removeProduct($productId);
+            }
+        }
+        return $this->orders;
     }
     public function getTotalFromOrder(int $orderId)
     {
@@ -69,7 +77,8 @@ class OrderManager
                 return false;
             }
             //Valida se o ID é um campo válido
-            if (empty($field) || !is_numeric($field)) {
+            if (!isset($field) || !is_numeric($field) || $field < 0) {
+
                 return false;
             }
         }
