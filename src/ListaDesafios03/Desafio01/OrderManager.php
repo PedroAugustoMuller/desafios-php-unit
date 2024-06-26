@@ -22,6 +22,16 @@ class OrderManager
         $this->orders[] = $order;
         return $order;
     }
+    public function deleteOrder(int $id)
+    {
+        foreach($this->orders as $key => $order){
+            if($order->getId() == $id){
+                unset($this->orders[$key]);
+                return true;
+            }
+        }
+        return false;
+    }
 
     public function addProductToOrder(int $orderId, Product $product)
     {
@@ -49,10 +59,25 @@ class OrderManager
         }
         foreach ($this->orders as $order){
             if ($order->getId() == $orderId){
-                $order->removeProduct($productId);
+                return $order->removeProduct($productId);
             }
         }
-        return $this->orders;
+        return false;
+    }
+    public function removeAllProductsFromOrder(int $orderId)
+    {
+        if (!$this->validate([$orderId])) {
+            return false;
+        }
+        if (!$this->validateOrderExists($orderId)) {
+            return false;
+        }
+        foreach ($this->orders as $order){
+            if ($order->getId() == $orderId){
+                return $order->removeAllProducts();
+            }
+        }
+        return false;
     }
     public function getTotalFromOrder(int $orderId)
     {
@@ -63,7 +88,13 @@ class OrderManager
         {
             return false;
         }
-        return $this->orders[$orderId]->getTotalPrice();
+        $totalPrice = 0;
+        foreach ($this->orders as $order){
+            if ($order->getId() == $orderId){
+                $totalPrice = $order->getTotalPrice();
+            }
+        }
+        return $totalPrice;
     }
 
     public function validate(array $fields): bool
@@ -91,5 +122,9 @@ class OrderManager
             return false;
         }
         return true;
+    }
+    public function getOrder()
+    {
+        return $this->orders;
     }
 }
