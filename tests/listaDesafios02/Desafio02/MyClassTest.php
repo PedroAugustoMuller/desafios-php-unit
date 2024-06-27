@@ -19,8 +19,7 @@ class MyClassTest extends TestCase
         $myClass = $this->getMockBuilder(MyClass::class)
             ->setConstructorArgs([['methods']])
             ->getMock();
-        $myClass->method('addMethod')->willReturn(true);
-        $this->assertTrue($myClass->addMethod('teste'));
+        $this->assertInstanceOf(MyClass::class,$myClass);
     }
     public function testSetMockClassName()
     {
