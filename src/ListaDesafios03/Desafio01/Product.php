@@ -4,7 +4,6 @@ namespace Root\Www\ListaDesafios03\Desafio01;
 
 use Error;
 use Exception;
-use http\Exception\InvalidArgumentException;
 
 class Product
 {

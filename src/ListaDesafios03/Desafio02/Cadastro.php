@@ -28,23 +28,9 @@ class Cadastro
      */
     public function __construct(string $fullName, bool $isForeing, string $birthDate, string $gender, string $cpf, string $phoneNumber, string $email)
     {
-        $this->validateCadastro($fullName, $isForeing, $birthDate, $gender, $cpf, $phoneNumber, $email);
-    }
-
-    public function validateCadastro($fullName, $isForeing, $birthDate, $gender, $cpf, $phoneNumber, $email)
-    {
         $birthDate = $this->validateBirthDate($birthDate);
         $cpf = $this->validateCPF($cpf);
         $phoneNumber = $this->validatePhoneNumber($phoneNumber);
-        if (!$birthDate) {
-            throw new InvalidArgumentException('Formado da data inválido - Formato Desejado: dddd/mm/YYYY');
-        }
-        if (!$cpf) {
-            throw new InvalidArgumentException('Formato de CPF inválido - Formato Desejado: XXX.XXX.XXX-XX');
-        }
-        if (!$phoneNumber) {
-            throw new InvalidArgumentException('Formato de Telefone Inválido - Formato Desejado: +55XXXXXXXXX');
-        }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException('Email Inválido');
         }
@@ -55,23 +41,22 @@ class Cadastro
         $this->cpf = $cpf;
         $this->phoneNumber = $phoneNumber;
         $this->email = $email;
-        return true;
     }
 
     public function validatePhoneNumber($phoneNumber)
     {
         if (!preg_match('/^\+55\d{2}9\d{8}$/', $phoneNumber)) {
-            return false;
+            throw new InvalidArgumentException('Formato de Telefone Inválido - Formato Desejado: +55XXXXXXXXX');
         }
         return $phoneNumber;
     }
 
-    public function validateBirthDate($birthDate)
+    public function validateBirthDate($birthDate): DateTime
     {
         $format = 'd/m/Y';
         $dateTimeObject = DateTime::createFromFormat($format, $birthDate);
         if (!$dateTimeObject || $dateTimeObject->format($format) != $birthDate) {
-            return false;
+            throw new InvalidArgumentException('Formado da data inválido - Formato Desejado: dddd/mm/YYYY');
         }
         return $dateTimeObject;
     }
@@ -79,12 +64,12 @@ class Cadastro
     public function validateCPF($cpf)
     {
         if (!preg_match('/^\d{3}\.\d{3}\.\d{3}-\d{2}$/', $cpf)) {
-            return false;
+            throw new InvalidArgumentException('Formato de CPF inválido - Formato Desejado: XXX.XXX.XXX-XX');
         }
         $cpfValido = $cpf;
         $cpf = preg_replace('/[^0-9]/', '', $cpf);
         if (strlen($cpf) != 11) {
-            return false;
+            throw new InvalidArgumentException('Formato de CPF inválido - Formato Desejado: XXX.XXX.XXX-XX');
         }
         $sum = 0;
         for ($i = 0; $i < 9; $i++) {
@@ -93,7 +78,7 @@ class Cadastro
         $remainder = $sum % 11;
         $digit1 = ($remainder < 2) ? 0 : (11 - $remainder);
         if (intval($cpf[9]) !== $digit1) {
-            return false;
+            throw new InvalidArgumentException('Formato de CPF inválido - Formato Desejado: XXX.XXX.XXX-XX');
         }
         $sum = 0;
         for ($i = 0; $i < 10; $i++) {
@@ -102,12 +87,12 @@ class Cadastro
         $remainder = $sum % 11;
         $digit2 = ($remainder < 2) ? 0 : (11 - $remainder);
         if (intval($cpf[10]) !== $digit2) {
-            return false;
+            throw new InvalidArgumentException('Formato de CPF inválido - Formato Desejado: XXX.XXX.XXX-XX');
         }
         return $cpfValido;
     }
 
-    public function setPassword($password, $confirmPassword)
+    public function setPassword($password, $confirmPassword): true
     {
         if ($password != $confirmPassword) {
             throw new InvalidArgumentException('Senhas não coincidem');
@@ -155,10 +140,5 @@ class Cadastro
     public function getPassword(): string
     {
         return $this->password;
-    }
-
-    public function getConfirmPassword(): string
-    {
-        return $this->confirmPassword;
     }
 }
